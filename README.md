@@ -306,3 +306,8 @@ php artisan make:model Product -mc
 ```
 
 
+
+## links
+
+- https://tutsforweb.com/restful-api-in-laravel-56-using-jwt-authentication/
+- http://www.phpzone.in/laravel-5-4-api-authentication-using-jwt-example/
