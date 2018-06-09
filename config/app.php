@@ -146,7 +146,8 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-
+        //Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,  // 5.5
+    
         /*
          * Package Service Providers...
          */
@@ -208,6 +209,8 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
+        //'JWTAuth' => Tymon\JWTAuth\Facades\JWTAuth::class,              // 5.5
+        //'JWTFactory' => Tymon\JWTAuth\Facades\JWTFactory::class,        // 5.5
 
     ],
 
