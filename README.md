@@ -2,6 +2,68 @@
 
 laravel jwt 认证例子
 
+
+Laravel 5.6 可以不用注册  JWT provider，可以自发现，
+5.5 以下的版本需要注册，并且自编写中间件来过滤，验证过的 $user 注入到控制器
+
+```
+public function __construct(User $user)
+{
+    $this->user = $user;
+}
+```
+
+
+5.6 可以在控制器构造函数中直接
+
+``` php
+public function __construct()
+{
+    $this->user = JWTAuth::parseToken()->authenticate();
+}
+```
+
+
+5.5 的中间件
+
+``` php
+<?php
+namespace App\Http\Middleware;
+use Closure;
+use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+class VerifyJWTToken
+{
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @return mixed
+     */
+    public function handle($request, Closure $next)
+    {
+        try{
+            $user = JWTAuth::toUser($request->input('token'));
+        }catch (JWTException $e) {
+            if($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+                return response()->json(['token_expired'], $e->getStatusCode());
+            }else if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+                return response()->json(['token_invalid'], $e->getStatusCode());
+            }else{
+                return response()->json(['error'=>'Token is required']);
+            }
+        }
+       return $next($request);
+    }
+}
+``` 
+
+laravel 的登录控制器方法在类库中，不好更改和阅读，
+自己写登录控制器代码看起来更明了
+
+
 ```
 composer create-project laravel/laravel laravel-jwt
 ```
